@@ -1,0 +1,260 @@
+<div class="apidocDiv">
+<style>
+/*csslint
+*/
+.apidocDiv {
+    background: #fff;
+    font-family: Arial, Helvetica, sans-serif;
+}
+.apidocDiv a[href] {
+    color: #33f;
+    font-weight: bold;
+    text-decoration: none;
+}
+.apidocDiv a[href]:hover {
+    text-decoration: underline;
+}
+.apidocCodeCommentSpan {
+    background: #bbf;
+    color: #000;
+    display: block;
+}
+.apidocCodeKeywordSpan {
+    color: #d00;
+    font-weight: bold;
+}
+.apidocCodePre {
+    background: #eef;
+    border: 1px solid;
+    color: #777;
+    padding: 5px;
+    white-space: pre-wrap;
+}
+.apidocFooterDiv {
+    margin-top: 20px;
+    text-align: center;
+}
+.apidocModuleLi {
+    margin-top: 10px;
+}
+.apidocSectionDiv {
+    border-top: 1px solid;
+    margin-top: 20px;
+}
+.apidocSignatureSpan {
+    color: #777;
+    font-weight: bold;
+}
+</style>
+<h1>api documentation for
+    <a
+
+        href="https://github.com/sindresorhus/hasha"
+
+    >hasha (v2.2.0)</a>
+</h1>
+<h4>Hashing made simple. Get the hash of a buffer/string/stream/file.</h4>
+<div class="apidocSectionDiv"><a
+    href="#apidoc.tableOfContents"
+    id="apidoc.tableOfContents"
+><h1>table of contents</h1></a><ol>
+
+    <li class="apidocModuleLi"><a href="#apidoc.module.hasha">module hasha</a><ol>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.element.hasha.fromFile">
+            function <span class="apidocSignatureSpan">hasha.</span>fromFile
+            <span class="apidocSignatureSpan">(fp, opts)</span>
+            </a>
+
+        </li>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.element.hasha.fromFileSync">
+            function <span class="apidocSignatureSpan">hasha.</span>fromFileSync
+            <span class="apidocSignatureSpan">(fp, opts)</span>
+            </a>
+
+        </li>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.element.hasha.fromStream">
+            function <span class="apidocSignatureSpan">hasha.</span>fromStream
+            <span class="apidocSignatureSpan">(stream, opts)</span>
+            </a>
+
+        </li>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.element.hasha.stream">
+            function <span class="apidocSignatureSpan">hasha.</span>stream
+            <span class="apidocSignatureSpan">(opts)</span>
+            </a>
+
+        </li>
+
+    </ol></li>
+
+</ol></div>
+
+<div class="apidocSectionDiv">
+<h1><a href="#apidoc.module.hasha" id="apidoc.module.hasha">module hasha</a></h1>
+
+
+    <h2>
+        <a href="#apidoc.element.hasha.fromFile" id="apidoc.element.hasha.fromFile">
+        function <span class="apidocSignatureSpan">hasha.</span>fromFile
+        <span class="apidocSignatureSpan">(fp, opts)</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">fromFile = function (fp, opts) {
+	return hasha.fromStream(fs.createReadStream(fp), opts);
+}</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+process.stdin.pipe(hasha.stream()).pipe(process.stdout);
+```
+
+```js
+var hasha = require(&#x27;hasha&#x27;);
+
+// get the MD5 hash of an image
+hasha.<span class="apidocCodeKeywordSpan">fromFile</span>(&#x27;unicorn.png&#x27;, {algorithm: &#x27;md5&#x27;}).then(function (
+hash) {
+	console.log(hash);
+	//=&#x3e; &#x27;1abcb33beeb811dca15f0ac3e47b88d9&#x27;
+});
+```
+
+
+## API
+...</pre></li>
+    </ul>
+
+
+
+    <h2>
+        <a href="#apidoc.element.hasha.fromFileSync" id="apidoc.element.hasha.fromFileSync">
+        function <span class="apidocSignatureSpan">hasha.</span>fromFileSync
+        <span class="apidocSignatureSpan">(fp, opts)</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">fromFileSync = function (fp, opts) {
+	return hasha(fs.readFileSync(fp), opts);
+}</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+
+Returns a promise that resolves to a hash.
+
+### hasha.fromFile(filepath, [options])
+
+Returns a promise that resolves to a hash.
+
+### hasha.<span class="apidocCodeKeywordSpan">fromFileSync</span>(filepath, [options])
+
+Returns a hash.
+
+
+## Resources
+
+- [Hasha: A Friendly Crypto API • DailyJS](http://dailyjs.com/2015/06/12/hasha-a-friendly-crypto-api/)
+...</pre></li>
+    </ul>
+
+
+
+    <h2>
+        <a href="#apidoc.element.hasha.fromStream" id="apidoc.element.hasha.fromStream">
+        function <span class="apidocSignatureSpan">hasha.</span>fromStream
+        <span class="apidocSignatureSpan">(stream, opts)</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">fromStream = function (stream, opts) {
+	if (!isStream(stream)) {
+		return Promise.reject(new TypeError(&#x27;Expected a stream&#x27;));
+	}
+
+	opts = opts || {};
+
+	return new Promise(function (resolve, reject) {
+		stream
+			.on(&#x27;error&#x27;, reject)
+			.pipe(hasha.stream(opts))
+			.on(&#x27;error&#x27;, reject)
+			.on(&#x27;finish&#x27;, function () {
+				resolve(this.read());
+			});
+	});
+}</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+			.on(&#x27;finish&#x27;, function () {
+				resolve(this.read());
+			});
+	});
+};
+
+hasha.fromFile = function (fp, opts) {
+	return hasha.<span class="apidocCodeKeywordSpan">fromStream</span>(fs.createReadStream(fp), opts);
+};
+
+hasha.fromFileSync = function (fp, opts) {
+	return hasha(fs.readFileSync(fp), opts);
+};
+...</pre></li>
+    </ul>
+
+
+
+    <h2>
+        <a href="#apidoc.element.hasha.stream" id="apidoc.element.hasha.stream">
+        function <span class="apidocSignatureSpan">hasha.</span>stream
+        <span class="apidocSignatureSpan">(opts)</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">stream = function (opts) {
+	opts = opts || {};
+
+	var outputEncoding = opts.encoding || &#x27;hex&#x27;;
+
+	if (outputEncoding === &#x27;buffer&#x27;) {
+		outputEncoding = undefined;
+	}
+
+	var stream = crypto.createHash(opts.algorithm || &#x27;sha512&#x27;);
+	stream.setEncoding(outputEncoding);
+	return stream;
+}</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+	}
+
+	opts = opts || {};
+
+	return new Promise(function (resolve, reject) {
+		stream
+			.on(&#x27;error&#x27;, reject)
+			.pipe(hasha.<span class="apidocCodeKeywordSpan">stream</span>(opts))
+			.on(&#x27;error&#x27;, reject)
+			.on(&#x27;finish&#x27;, function () {
+				resolve(this.read());
+			});
+	});
+};
+...</pre></li>
+    </ul>
+
+
+</div>
+
+<div class="apidocFooterDiv">
+    [ this document was created with
+    <a href="https://github.com/kaizhu256/node-utility2" target="_blank">utility2</a>
+    ]
+</div>
+</div>
